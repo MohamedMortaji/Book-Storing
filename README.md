@@ -2,6 +2,8 @@
 
 This is an initial implementation of a **solution logic validator** using OWL and SHACL. It defines the ontology, validation constraints, and a set of test cases.
 
+The five rules enforced in SHACL are specified in the THE RULES.txt file.
+
 ### Running the Test Battery
 
 To run all test cases at once, use:
