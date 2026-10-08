@@ -1,0 +1,119 @@
+@prefix : <http://example.org/bookshelf#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:BookShape
+    a sh:NodeShape ;
+    sh:targetClass :Book ;
+
+    # Rule 1: Every book has exactly one topic
+    sh:property [
+        sh:path :bookTopic ;
+        sh:minCount 1 ;
+        sh:message "Every book must have a topic." ;
+    ] ;
+
+    sh:property [
+        sh:path :bookTopic ;
+        sh:maxCount 1 ;
+        sh:message "A book cannot have more than one topic." ;
+    ] ;
+
+    sh:property [
+        sh:path :bookTopic ;
+        sh:class :Topic ;
+        sh:message "The book's topic is not valid." ;
+    ] ;
+
+    # Rule 2: Every book is stored on exactly one shelf
+    sh:property [
+        sh:path :storedOn ;
+        sh:minCount 1 ;
+        sh:message "Every book must be stored on a shelf." ;
+    ] ;
+
+    sh:property [
+        sh:path :storedOn ;
+        sh:maxCount 1 ;
+        sh:message "Every book must be stored exactly once." ;
+    ] ;
+
+    sh:property [
+        sh:path :storedOn ;
+        sh:class :Shelf ;
+        sh:message "A book must be stored on a Shelf." ;
+    ] .
+
+
+#Rule 3: Topic consistency
+:BookTopicShelfShape
+    a sh:NodeShape ;
+    sh:targetClass :Book ;
+
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+
+        sh:message
+            "The book topic must match the topic of its shelf." ;
+
+        sh:select """
+            SELECT $this
+            WHERE {
+                $this :bookTopic ?bookTopic .
+                $this :storedOn ?shelf .
+                ?shelf :shelfTopic ?shelfTopic .
+
+                FILTER (?bookTopic != ?shelfTopic)
+            }
+        """ ;
+    ] .
+
+#Rule 4: shelf capacity
+:ShelfCapacityShape
+    a sh:NodeShape ;
+    sh:targetClass :Shelf ;
+
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+
+        sh:message
+            "A shelf cannot contain more books than its capacity." ;
+
+        sh:select """
+            SELECT $this
+            WHERE {
+                $this :capacity ?capacity .
+                {
+                    SELECT $this (COUNT(?book) AS ?bookCount)
+                    WHERE {
+                        ?book :storedOn $this .
+                    }
+                    GROUP BY $this
+                }
+                FILTER (?bookCount > ?capacity)
+            }
+        """ ;
+    ] .
+
+# Rule 5: Every shelf has exactly one topic
+:ShelfShape
+    a sh:NodeShape ;
+    sh:targetClass :Shelf ;
+
+    sh:property [
+        sh:path :shelfTopic ;
+        sh:minCount 1 ;
+        sh:message "Every shelf must have a topic." ;
+    ] ;
+
+    sh:property [
+        sh:path :shelfTopic ;
+        sh:maxCount 1 ;
+        sh:message "A shelf cannot have more than one topic." ;
+    ] ;
+
+    sh:property [
+        sh:path :shelfTopic ;
+        sh:class :Topic ;
+        sh:message "The shelf's topic is not valid." ;
+    ] .

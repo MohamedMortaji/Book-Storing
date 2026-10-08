@@ -1,0 +1,22 @@
+The RULES are:
+
+1. Every book has exactly one topic
+    -A book must have a topic.
+    -A book cannot have more than one topic.
+
+2. Every book must be stored exactly once on a shelf
+    -Each book must have exactly one `storedOn` relationship.
+    -A book cannot be assigned to multiple shelves.
+
+3. A shelf contains books of only one topic
+    -The topic of every book stored on a shelf must match the shelf's `shelfTopic`.
+    -Therefore, a shelf cannot contain books from different topics.
+
+4. Shelf capacity
+    -The number of books stored on a shelf must not exceed its capacity.
+
+5. Every shelf has exactly one topic
+    -Each shelf must have exactly one shelfTopic relationship.  
+    -A shelf cannot have multiple topics.
+
+

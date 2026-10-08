@@ -1,0 +1,28 @@
+@prefix : <http://example.org/bookshelf#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:BookShelfOntology a owl:Ontology .
+
+# Classes
+:Book a owl:Class .
+:Shelf a owl:Class .
+:Topic a owl:Class .
+
+# Object Properties
+:bookTopic a owl:ObjectProperty, owl:FunctionalProperty ;
+    rdfs:domain :Book ;
+    rdfs:range :Topic .
+
+:shelfTopic a owl:ObjectProperty ;
+    rdfs:domain :Shelf ;
+    rdfs:range :Topic .
+
+:storedOn a owl:ObjectProperty ;
+    rdfs:domain :Book ;
+    rdfs:range :Shelf .
+
+:capacity a owl:DatatypeProperty ;
+    rdfs:domain :Shelf ;
+    rdfs:range xsd:integer .

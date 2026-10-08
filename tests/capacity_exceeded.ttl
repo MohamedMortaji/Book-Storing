@@ -1,0 +1,19 @@
+@prefix : <http://example.org/bookshelf#> .
+
+:b1 a :Book ;
+    :bookTopic :Biology ;
+    :storedOn :shelf1 .
+
+:b2 a :Book ;
+    :bookTopic :Biology ;
+    :storedOn :shelf1 .
+
+:b3 a :Book ;
+    :bookTopic :Biology ;
+    :storedOn :shelf1 .
+
+:shelf1 a :Shelf ;
+    :shelfTopic :Biology ;
+    :capacity 2 .
+
+:Biology a :Topic .
